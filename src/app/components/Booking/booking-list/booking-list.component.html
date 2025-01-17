@@ -1,0 +1,58 @@
+<div class="event-wraper">
+    <div class="title-wraper">
+        <div class="page-title">
+            <h2>Bookings</h2>
+        </div>
+        <div class="add-btn">
+                <button type="button" class="btn btn-primary" (click)="addBookingPage()">Book seats</button>
+        </div>
+    </div>
+    <div class="responsive-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Event Name</th>
+                    <th>Event Type</th>
+                    <th>Date</th>
+                    <th>Booked Seats No.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookingList; let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{booking.eventName}}</td>
+                    <td>{{booking.eventType | titlecase}}</td>
+                    <td>{{booking.date | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{booking.seatNumber}}</td>
+                    <td>
+                       <div ngbDropdown class="d-inline-block">
+                            <button type="button" class="btn btn-outline-secondary" id="dropdownBasic" ngbDropdownToggle>
+                                Actions
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic">
+                                <button ngbDropdownItem (click)="openModal(content, booking._id)">Cancel Booking</button>
+                            </div>
+                        </div> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Cancel Booking</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to cancel this booking? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="deleteBooking()">Cancel Booking</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Save click')">Cancel</button>
+        </div>
+    </ng-template>
+
+</div>

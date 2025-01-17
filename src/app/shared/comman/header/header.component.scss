@@ -1,0 +1,26 @@
+.header-wraper {
+    justify-content: space-between;
+
+    .header-left {
+
+        .logo {
+            h2{
+                color: #fff;
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .header-rigth {
+        .user-detail {
+            h2 {
+                font-size: 18px;
+                line-height: 26px;
+                letter-spacing: 1px;
+                color: #fff;
+            }
+        }
+    }
+}

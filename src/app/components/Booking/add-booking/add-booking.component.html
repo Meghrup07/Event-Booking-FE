@@ -1,0 +1,69 @@
+<div class="booking-wraper">
+    <div class="title-wraper">
+        <div class="page-title">
+            <h2>Add Booking</h2>
+        </div>
+        <div class="add-btn">
+            <button (click)="backPage()" type="button" class="btn btn-primary">Back</button>
+        </div>
+    </div>
+
+    <div class="booking-add-form">
+        <form [formGroup]="bookingForm" class="auth-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Event</label>
+                        <select class="form-select" formControlName="eventId"
+                            [class.is-invalid]="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched">
+                            <option *ngFor="let event of eventList; let i = index" [value]="event._id">{{event.eventName}}</option>
+                        </select>
+                        <div *ngIf="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched"
+                            class="invalid-feedback">
+                            Please select event
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Select Seat Number</label>
+                        <div class="seat-grid">
+                            <div
+                              *ngFor="let seat of availableSeats"
+                              class="seat"
+                              [class.booked]="bookedSeats.includes(seat)"
+                              [class.selected]="seat === bookingForm.get('seatNumber')?.value"
+                              [class.disabled]="bookedSeats.includes(seat)"
+                              (click)="selectSeat(seat, content)"
+                            >
+                              {{ seat }}
+                            </div>
+                          </div>                          
+                        <div *ngIf="bookingForm.get('seatNumber')?.errors && bookingForm.get('seatNumber')?.touched" class="invalid-feedback">
+                            Please select a seat
+                        </div>
+                    </div>
+                </div>                                               
+
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-primary" (click)="bookingHandler()" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Seat booked</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p>Seat already booked. Please select other seat.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Save click')">Cancel</button>
+        </div>
+    </ng-template>
+
+</div>

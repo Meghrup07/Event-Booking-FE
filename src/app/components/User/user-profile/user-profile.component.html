@@ -1,0 +1,78 @@
+<div class="booking-wraper">
+    <div class="title-wraper">
+        <div class="page-title">
+            <h2>User Profile</h2>
+        </div>
+        <div class="add-btn">
+            <button (click)="editProfile()" type="button" class="btn btn-primary">Edit Details</button>
+        </div>
+    </div>
+
+    <div class="booking-add-form">
+        <form [formGroup]="userForm" class="auth-form">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Username</label>
+                        <input class="form-control" type="text" value="{{userDetails?.userName}}" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Role</label>
+                        <input class="form-control" type="text" value="{{userDetails?.role | titlecase}}" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" formControlName="firstName"
+                        [class.is-invalid]="userForm.get('firstName')?.errors && userForm.get('firstName')?.touched"
+                        [disabled]="!editDetails">
+                        <div *ngIf="userForm.get('firstName')?.errors && userForm.get('firstName')?.touched"
+                            class="invalid-feedback">
+                            First name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" formControlName="lastName"
+                        [class.is-invalid]="userForm.get('lastName')?.errors && userForm.get('lastName')?.touched"
+                        [disabled]="!editDetails">
+                        <div *ngIf="userForm.get('lastName')?.errors && userForm.get('lastName')?.touched"
+                            class="invalid-feedback">
+                            Last name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" formControlName="email"
+                        [class.is-invalid]="userForm.get('email')?.errors && userForm.get('email')?.touched"
+                        [disabled]="!editDetails">
+                        <div *ngIf="userForm.get('email')?.errors && userForm.get('email')?.touched"
+                            class="invalid-feedback">
+                            Email is required
+                        </div>
+                    </div>
+                </div>
+               
+
+            </div>
+            <div class="text-center mt-3">
+                @if(editDetails){
+                    <button class="btn btn-primary" type="submit" (click)="saveProfile()">Save</button>
+                }
+            </div>
+        </form>
+    </div>
+
+</div>

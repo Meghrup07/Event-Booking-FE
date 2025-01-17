@@ -1,0 +1,73 @@
+<div class="booking-wraper">
+    <div class="title-wraper">
+        <div class="page-title">
+            <h2>Add Event</h2>
+        </div>
+        <div class="add-btn">
+            <button (click)="backPage()" type="button" class="btn btn-primary">Back</button>
+        </div>
+    </div>
+
+    <div class="booking-add-form">
+        <form [formGroup]="eventForm" class="auth-form">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Event Name</label>
+                        <input type="text" class="form-control" formControlName="eventName"
+                        [class.is-invalid]="eventForm.get('eventName')?.errors && eventForm.get('eventName')?.touched">
+                        <div *ngIf="eventForm.get('eventName')?.errors && eventForm.get('eventName')?.touched"
+                            class="invalid-feedback">
+                            Event name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Event Type</label>
+                        <select class="form-select" formControlName="eventType"
+                            [class.is-invalid]="eventForm.get('eventType')?.errors && eventForm.get('eventType')?.touched">
+                            <option value="concert">Concert</option>
+                            <option value="conference">Conference</option>
+                        </select>
+                        <div *ngIf="eventForm.get('eventType')?.errors && eventForm.get('eventType')?.touched"
+                            class="invalid-feedback">
+                        Please select event type
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Event Date</label>
+                        <input type="date" class="form-control" formControlName="date"
+                        [class.is-invalid]="eventForm.get('date')?.errors && eventForm.get('date')?.touched">
+                        <div *ngIf="eventForm.get('date')?.errors && eventForm.get('date')?.touched"
+                            class="invalid-feedback">
+                            Date is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Total Seats</label>
+                        <input type="number" class="form-control" formControlName="totalSeats"
+                        [class.is-invalid]="eventForm.get('totalSeats')?.errors && eventForm.get('totalSeats')?.touched">
+                        <div *ngIf="eventForm.get('totalSeats')?.errors && eventForm.get('totalSeats')?.touched"
+                            class="invalid-feedback">
+                            Total seats is required
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-primary" type="submit" (click)="addEventHandler()">Save</button>
+            </div>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,32 @@
+.siderbar-wraper {
+    .siderbar-item {
+        .menu-list {
+            padding: 0;
+
+            .menu-item {
+                list-style: none;
+                padding: 2px 0;
+
+                .menu-link {
+                    color: #9396a6;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 19px;
+                    text-decoration: none;
+                    transition: all 0.3s ease-in-out 0s;
+                    padding: 12px;
+                    cursor: pointer;
+                    display: block;
+                    width: 100%;
+                    border-radius: 10px;
+
+                    &:hover,
+                    &.active-link {
+                        color: #fff;
+                        background-color: #6679DB;
+                    }
+                }
+            }
+        }
+    }
+}

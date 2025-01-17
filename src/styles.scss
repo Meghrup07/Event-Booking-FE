@@ -1,0 +1,226 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+* {
+    color: #000;
+}
+
+body {
+    color: #000;
+}
+
+
+::-webkit-scrollbar {
+    height: 3px;
+    width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #F7F7F7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #818FDD;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #6679DB;
+}
+
+.btn {
+    &.btn-primary {
+        background-color: #6679DB !important;
+        border-color: #6679DB !important;
+        box-shadow: 2px 2px 10px 1px rgba(147, 150, 166, 0.4) !important;
+
+        &:hover {
+            background-color: #818FDD !important;
+            border-color: #818FDD !important;
+        }
+    }
+
+    &.btn-secondary {
+        background-color: #fff !important;
+        border-color: #fff !important;
+        box-shadow: 2px 2px 10px 1px rgba(147, 150, 166, 0.4) !important;
+        color: #9396a6 !important;
+
+        &:hover {
+            background-color: #9396a6 !important;
+            border-color: #9396a6 !important;
+            color: #fff !important;
+        }
+    }
+}
+
+header {
+    height: 80px;
+
+    .header-wraper {
+        height: 80px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #6679DB;
+        display: flex;
+        align-items: center;
+        color: #fff;
+        padding: 0 20px;
+    }
+}
+
+
+.main-wraper {
+    display: flex;
+    height: calc(100vh - 80px);
+
+    .siderbar {
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
+        background-color: #F8F9FE;
+        color: #fff;
+        margin: 20px 0;
+        box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .layout {
+        padding: 20px;
+        flex: 1;
+        overflow: auto;
+        background-color: #F8F9FE;
+        color: #fff;
+        margin: 20px 0 20px 20px;
+        box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
+        border-radius: 10px;
+    }
+
+    .title-wraper {
+        border-bottom: 1px solid #E7E8E8;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+
+        .page-title {
+            margin-bottom: 5px;
+            position: relative;
+
+            &::after {
+                content: "";
+                width: 80px;
+                height: 3px;
+                background-color: #6679DB;
+                position: absolute;
+                bottom: -7px;
+            }
+
+            h2 {
+                font-size: 20px;
+                line-height: 28px;
+                color: #6679DB;
+                font-weight: 600;
+                width: max-content;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        .add-btn {
+            margin-bottom: 5px;
+        }
+    }
+
+    .page-search {
+        margin-bottom: 40px;
+
+        input {
+            margin-left: auto;
+            width: 15%;
+        }
+    }
+
+    table {
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
+            border-color: #F8F9FE;
+            border-bottom: 5px solid #F8F9FE;
+            height: 60px;
+            vertical-align: middle;
+        }
+    }
+
+    .card {
+        box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
+
+        // .card-title {
+        //     color: #9396a6;
+        // }
+
+        .card-text {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 700;
+            color: #6679DB;
+        }
+    }
+}
+
+.toast-message{
+    color: #fff !important;
+}
+
+
+.seat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .seat {
+    width: 40px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .seat.booked {
+    background-color: #ff6b6b;
+    cursor: not-allowed;
+  }
+  
+  .seat.selected {
+    background-color: #6679DB;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .seat.disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+  }
+  
+  .seat:hover:not(.booked):not(.disabled) {
+    background-color: #d3d3d3;
+  }
+  

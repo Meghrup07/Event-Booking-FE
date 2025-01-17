@@ -1,0 +1,43 @@
+<div class="auth-screens onload">
+    <div class="d-flex flex-fill flex-column flex-md-row" id="onBoarding">
+        <div class="onBoarding-left flex-fill d-flex flex-column">
+            <div class="onboarding-graphic flex-fill d-flex">
+                <img alt="Login" class="img-fluid" src="/assets/onboarding-login.png">
+            </div>
+        </div>
+        <div class="onBoarding-right d-flex justify-content-md-center align-items-md-center flex-fill">
+            <div class="onBoarding-forms">
+                <form [formGroup]="loginForm" class="auth-form">
+                    <div class="form-intro">
+                        <h1>Login</h1>
+                        <p class="m-0">Welcome back! Please enter your details.</p>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            [class.is-invalid]="loginForm.get('email')?.errors && loginForm.get('email')?.touched"
+                            type="text" class="form-control" formControlName="email">
+                        <div *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched"
+                            class="invalid-feedback">
+                            Email is required
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            [class.is-invalid]="loginForm.get('password')?.errors && loginForm.get('password')?.touched"
+                            type="password" class="form-control" formControlName="password">
+                        <div *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched"
+                            class="invalid-feedback">
+                            Password is required
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-3" (click)="loginHandler()" type="submit">Login</button>
+                    <div class="form-footer mt-3">
+                        <p>Don’t have an account? <a (click)="register()" title="Sign up">Sign up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

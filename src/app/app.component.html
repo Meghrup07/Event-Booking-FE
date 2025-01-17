@@ -1,0 +1,19 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" [fullScreen]="true" type="line-scale-party">
+  <h3 style="color: white">Loading...</h3>
+</ngx-spinner>
+@if(currentUser()){
+<div class="main">
+  <app-header></app-header>
+  <div class="main-wraper">
+    <div class="siderbar">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="layout">
+      <div class="layout-wraper">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+}
+<router-outlet></router-outlet>
