@@ -68,7 +68,10 @@
                         <label class="form-label">Password</label>
                         <input
                             [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
-                            type="text" class="form-control" formControlName="password">
+                            [type]="passwordFieldType" class="form-control" formControlName="password">
+                        <button type="button" class="btn btn-outline-secondary input-group-text" (click)="togglePasswordVisibility()">
+                            <i [ngClass]="passwordFieldType === 'password' ? 'bi-eye' : 'bi-eye-slash'"></i>
+                        </button>
                         <div *ngIf="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
                             class="invalid-feedback">
                             Password is required

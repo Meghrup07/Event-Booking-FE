@@ -17,92 +17,98 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddBookingComponent implements OnInit {
 
-    private bookingService = inject(BookingService);
-    private authService = inject(LoginService);
-    private toast = inject(ToastrService);
-    private route = inject(Router);
-    private modalService = inject(NgbModal);
-    
-    eventList: any[] = [];
-    selectedEvent: any;
-    availableSeats: number[] = [];
-    bookedSeats: number[] = [];
-    userId:any = null
+  private bookingService = inject(BookingService);
+  private authService = inject(LoginService);
+  private toast = inject(ToastrService);
+  private route = inject(Router);
+  private modalService = inject(NgbModal);
 
-    booleanValue = false;
+  eventList: any[] = [];
+  selectedEvent: any;
+  availableSeats: number[] = [];
+  bookedSeats: number[] = [];
+  userId: any = null
 
-    bookingForm!: FormGroup;
-  
-    ngOnInit(): void {
-      this.getBookingForm();
-      this.getEventsList();
-      this.userId = this.authService.currentUser()?.id
+  booleanValue = false;
+
+  bookingForm!: FormGroup;
+
+  ngOnInit(): void {
+    this.getBookingForm();
+    this.getEventsList();
+    this.userId = this.authService.currentUser()?.id
+  }
+
+  getBookingForm() {
+    this.bookingForm = new FormGroup({
+      userId: new FormControl(null, Validators.required),
+      eventId: new FormControl(null, Validators.required),
+      seatNumber: new FormControl(null, Validators.required),
+    });
+
+    this.bookingForm.get('eventId')?.valueChanges.subscribe((eventId: string) => {
+      this.onEventChange(eventId);
+    });
+  }
+
+  getEventsList() {
+    this.bookingService.eventList().subscribe((res: any) => {
+      this.eventList = res.data;
+    });
+  }
+
+  onEventChange(eventId: string) {
+    this.selectedEvent = this.eventList.find(event => event._id === eventId);
+    if (this.selectedEvent) {
+      this.bookedSeats = this.selectedEvent.bookedSeats || [];
+      this.generateAvailableSeats();
     }
+  }
 
-    getBookingForm(){
-      this.bookingForm = new FormGroup({
-        userId: new FormControl(null, Validators.required),
-        eventId: new FormControl(null, Validators.required),
-        seatNumber: new FormControl(null, Validators.required),
-      });
-
-      this.bookingForm.get('eventId')?.valueChanges.subscribe((eventId: string) => {
-        this.onEventChange(eventId);
-      });
+  generateAvailableSeats() {
+    const totalSeats = this.selectedEvent?.totalSeats || 0;
+    this.availableSeats = [];
+    for (let i = 1; i <= totalSeats; i++) {
+      this.availableSeats.push(i);
     }
-  
-    getEventsList() {
-      this.bookingService.eventList().subscribe((res:any) => {
-        this.eventList = res.data;
-      });
-    }
+  }
 
-    onEventChange(eventId: string) {
-      this.selectedEvent = this.eventList.find(event => event._id === eventId);
-      if (this.selectedEvent) {
-        this.bookedSeats = this.selectedEvent.bookedSeats || [];
-        this.generateAvailableSeats();
+  selectSeat(seat: number, content: any) {
+    const bookedSeatsAsStrings = this.bookedSeats.map((s: any) => s.toString());
+    if (bookedSeatsAsStrings.includes(seat.toString())) {
+      this.modalService.open(content);
+      this.booleanValue = true;
+      return;
+    }
+    this.bookingForm.get('seatNumber')?.setValue(seat);
+  }
+
+
+  bookingHandler() {
+    const reqBody = {
+      userId: this.userId,
+      eventId: this.bookingForm.controls['eventId'].value,
+      seatNumber: this.bookingForm.controls['seatNumber'].value
+    }
+    this.bookingService.bookeSeats(reqBody).subscribe({
+      next: () => {
+        this.toast.success("Seat booked successfully");
+        this.route.navigateByUrl("booking");
+      },
+      error: (err) => {
+        this.toast.error(err?.error.message);
       }
-    }
-  
-    generateAvailableSeats() {
-      const totalSeats = this.selectedEvent?.totalSeats || 0;
-      this.availableSeats = [];
-      for (let i = 1; i <= totalSeats; i++) {
-        this.availableSeats.push(i);
-      }
-    }
+    })
+  }
 
-    selectSeat(seat: number, content:any) {
-      const bookedSeatsAsStrings = this.bookedSeats.map((s: any) => s.toString());
-      if (bookedSeatsAsStrings.includes(seat.toString())) {        
-        this.modalService.open(content);
-        this.booleanValue = true;
-        return;
-      }
-      this.bookingForm.get('seatNumber')?.setValue(seat);
-    }
-    
+  isEventExpired(eventDate: string): boolean {
+    const today = new Date();
+    const eventDateObj = new Date(eventDate);
+    return eventDateObj < today;
+  }
 
-    bookingHandler(){
-      const reqBody = {
-        userId: this.userId,
-        eventId: this.bookingForm.controls['eventId'].value,
-        seatNumber: this.bookingForm.controls['seatNumber'].value
-      }
-      this.bookingService.bookeSeats(reqBody).subscribe({
-        next: ()=>{
-          this.toast.success("Seat booked successfully");
-          this.route.navigateByUrl("booking");
-        },
-        error: (err)=>{
-          this.toast.error(err?.error.message);
-        }
-      })
-    }
-
-    backPage(){
-      this.route.navigateByUrl("booking")
-    }
+  backPage() {
+    this.route.navigateByUrl("booking")
+  }
 
 }

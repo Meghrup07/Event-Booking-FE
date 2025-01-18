@@ -5,12 +5,13 @@
         </div>
         <div class="add-btn">
             @if(adminRole){
-                <button type="button" class="btn btn-primary" (click)="addEventPage()">Add New</button>
+            <button type="button" class="btn btn-primary" (click)="addEventPage()">Add New</button>
             }
         </div>
     </div>
     <div class="page-search">
-        <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="search" (ngModelChange)="onSearchChange($event)">
+        <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="search"
+            (ngModelChange)="onSearchChange($event)">
     </div>
     <div class="responsive-table">
         <table class="table">
@@ -33,14 +34,16 @@
                     <td>{{event.totalSeats}}</td>
                     <td>
                         <div ngbDropdown class="d-inline-block">
-                            <button type="button" class="btn btn-outline-secondary" id="dropdownBasic" ngbDropdownToggle>
+                            <button type="button" class="btn btn-outline-secondary" id="dropdownBasic"
+                                ngbDropdownToggle>
                                 Actions
                             </button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic">
-                                <button (click)="bookingPage()" ngbDropdownItem>Book Seat</button>
+                                <button (click)="bookingPage()" ngbDropdownItem
+                                    [disabled]="isEventExpired(event.date)">Book Seat</button>
                                 @if(adminRole){
-                                    <button ngbDropdownItem (click)="editEventPage(event._id)">Edit</button>
-                                    <button ngbDropdownItem (click)="openModal(content, event._id)">Delete</button>
+                                <button ngbDropdownItem (click)="editEventPage(event._id)">Edit</button>
+                                <button ngbDropdownItem (click)="openModal(content, event._id)">Delete</button>
                                 }
                             </div>
                         </div>

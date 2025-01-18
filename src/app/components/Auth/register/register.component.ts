@@ -19,35 +19,40 @@ export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
 
+  passwordFieldType: string = 'password';
+
   ngOnInit(): void {
     this.getRegisterForm();
   }
 
-  getRegisterForm(){
+  getRegisterForm() {
     this.registerForm = new FormGroup({
-    email:new FormControl(null, [Validators.required, Validators.email]),
-    password:new FormControl(null, [Validators.required]),
-    userName:new FormControl(null, [Validators.required]),
-    firstName:new FormControl(null, [Validators.required]),
-    lastName:new FormControl(null, [Validators.required]),
-    role:new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required]),
+      userName: new FormControl(null, [Validators.required]),
+      firstName: new FormControl(null, [Validators.required]),
+      lastName: new FormControl(null, [Validators.required]),
+      role: new FormControl(null, [Validators.required]),
     })
   }
 
 
-  registerHandler(){
+  registerHandler() {
     this.authService.register(this.registerForm.value).subscribe({
-      next: ()=>{
+      next: () => {
         this.toast.success("Register successfully");
         this.route.navigateByUrl("");
         this.registerForm.reset();
       },
-      error:(err)=>{
+      error: (err) => {
         this.toast.error(err?.error.message);
       }
     })
   }
 
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   login() {
     this.route.navigateByUrl("");

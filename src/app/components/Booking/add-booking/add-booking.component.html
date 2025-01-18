@@ -16,7 +16,8 @@
                         <label class="form-label">Event</label>
                         <select class="form-select" formControlName="eventId"
                             [class.is-invalid]="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched">
-                            <option *ngFor="let event of eventList; let i = index" [value]="event._id">{{event.eventName}}</option>
+                            <option *ngFor="let event of eventList; let i = index" [value]="event._id"
+                            [disabled]="isEventExpired(event.date)">{{event.eventName}}</option>
                         </select>
                         <div *ngIf="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched"
                             class="invalid-feedback">

@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
   private toastr = inject(ToastrService);
   loginForm!: FormGroup
 
+  passwordFieldType: string = 'password';
+
   ngOnInit(): void {
     this.getloginForm();
   }
@@ -41,6 +43,10 @@ export class LoginComponent implements OnInit {
         this.toastr.error(err?.error?.message);
       }
     })
+  }
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   register() {

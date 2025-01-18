@@ -21,13 +21,13 @@ export class EventListComponent implements OnInit {
   private route = inject(Router);
   private toast = inject(ToastrService);
   private modalService = inject(NgbModal);
-  
+
   eventList: any[] = [];
   search = '';
   page = 1;
   limit = 10;
-  totalCount:any = null
-  adminRole:any = null
+  totalCount: any = null
+  adminRole: any = null
 
   selectedEventId: string | null = null;
 
@@ -38,7 +38,7 @@ export class EventListComponent implements OnInit {
 
 
   getEventsList() {
-    this.eventService.getEventList(this.page, this.limit, this.search).subscribe((res:any) => {
+    this.eventService.getEventList(this.page, this.limit, this.search).subscribe((res: any) => {
       this.eventList = res.data;
       this.totalCount = res.total;
     });
@@ -90,15 +90,21 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  addEventPage(){
+  isEventExpired(eventDate: string): boolean {
+    const today = new Date();
+    const eventDateObj = new Date(eventDate);
+    return eventDateObj < today;
+  }
+
+  addEventPage() {
     this.route.navigateByUrl("event/add");
   }
 
-  editEventPage(id:string){
+  editEventPage(id: string) {
     this.route.navigateByUrl(`event/edit/${id}`);
   }
 
-  bookingPage(){
+  bookingPage() {
     this.route.navigateByUrl("booking/add")
   }
 
