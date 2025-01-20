@@ -17,7 +17,7 @@
                         <select class="form-select" formControlName="eventId"
                             [class.is-invalid]="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched">
                             <option *ngFor="let event of eventList; let i = index" [value]="event._id"
-                            [disabled]="isEventExpired(event.date)">{{event.eventName}}</option>
+                                [disabled]="isEventExpired(event.date)">{{event.eventName}}</option>
                         </select>
                         <div *ngIf="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched"
                             class="invalid-feedback">
@@ -30,22 +30,19 @@
                     <div class="form-group mb-3">
                         <label class="form-label">Select Seat Number</label>
                         <div class="seat-grid">
-                            <div
-                              *ngFor="let seat of availableSeats"
-                              class="seat"
-                              [class.booked]="bookedSeats.includes(seat)"
-                              [class.selected]="seat === bookingForm.get('seatNumber')?.value"
-                              [class.disabled]="bookedSeats.includes(seat)"
-                              (click)="selectSeat(seat, content)"
-                            >
-                              {{ seat }}
+                            <div *ngFor="let seat of availableSeats" class="seat"
+                                [class.booked]="bookedSeats.includes(seat)"
+                                [class.selected]="seat === bookingForm.get('seatNumber')?.value"
+                                [class.disabled]="bookedSeats.includes(seat)" (click)="selectSeat(seat, content)">
+                                {{ seat }}
                             </div>
-                          </div>                          
-                        <div *ngIf="bookingForm.get('seatNumber')?.errors && bookingForm.get('seatNumber')?.touched" class="invalid-feedback">
+                        </div>
+                        <div *ngIf="bookingForm.get('seatNumber')?.errors && bookingForm.get('seatNumber')?.touched"
+                            class="invalid-feedback">
                             Please select a seat
                         </div>
                     </div>
-                </div>                                               
+                </div>
 
             </div>
             <div class="text-center mt-3">

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,9 +10,15 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   private authService = inject(LoginService);
   private toast = inject(ToastrService)
+
+  adminRole: any;
+
+  ngOnInit(): void {
+    this.adminRole = this.authService.currentUser().role == "admin";
+  }
 
   logout() {
     this.authService.logout();

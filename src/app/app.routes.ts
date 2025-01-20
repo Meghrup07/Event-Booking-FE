@@ -22,7 +22,7 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: 'profile',
+        path: 'user',
         loadChildren:()=> import("./components/User/user.module").then(m=> m.UserModule),
         canActivate: [authGuard]
     },
