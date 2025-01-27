@@ -1,20 +1,27 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { EventService } from '../../../shared/services/event.service';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginService } from '../../../shared/services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarModule } from 'primeng/calendar';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import { EventService } from '../services/event.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-event-list',
-  standalone: true,
-  imports: [CommonModule, FormsModule, NgbModule],
+  imports: [CommonModule, FormsModule, NgbModule, CalendarModule, FullCalendarModule],
   templateUrl: './event-list.component.html',
-  styleUrl: './event-list.component.scss'
+  styleUrls: ['./event-list.component.scss']
 })
-export class EventListComponent implements OnInit {
+export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private eventService = inject(EventService);
   private authService = inject(LoginService);
@@ -22,52 +29,135 @@ export class EventListComponent implements OnInit {
   private toast = inject(ToastrService);
   private modalService = inject(NgbModal);
 
-  eventList: any[] = [];
-  search = '';
-  page = 1;
-  limit = 10;
-  totalCount: any = null
-  adminRole: any = null
+  private unsubscribe: Subscription[] = [];
 
+  @ViewChild('eventDetailsModal', { static: true }) eventDetailsModal: TemplateRef<any> | undefined;
+  @ViewChild(FullCalendarComponent) fullCalendar: FullCalendarComponent | undefined;
+
+  page = 1;
+  limit = 100;
+  search = ''
+  adminRole: any = null;
   selectedEventId: string | null = null;
+  selectedEvent: any = null;
+  eventDates: string[] = [];
+  events: any[] = [];
+
+  calendarVisible = signal(true);
 
   ngOnInit(): void {
     this.getEventsList();
-    this.adminRole = this.authService.currentUser()?.role == "admin"
+    this.adminRole = this.authService.currentUser()?.role === 'admin';
   }
 
+  ngAfterViewInit(): void {
+    const calendarApi = this.fullCalendar?.getApi();
+    if (calendarApi) {
+    }
+  }
+
+  calendarOptions = signal<CalendarOptions>({
+    plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin],
+    headerToolbar: {
+      left: '',
+      center: '',
+      right: ''
+    },
+    events: [],
+    initialView: 'timeGridDay',
+    editable: false,
+    selectable: true,
+    selectMirror: false,
+    timeZone: 'local',
+    eventDisplay: 'block',
+    allDaySlot: false,
+    select: (info) => this.addEventPage(info.startStr),
+    eventClick: (info) => {
+      this.openEventModal(info.event.id);
+    }
+  });
 
   getEventsList() {
-    this.eventService.getEventList(this.page, this.limit, this.search).subscribe((res: any) => {
-      this.eventList = res.data;
-      this.totalCount = res.total;
+    try {
+      const saveSubscribe = this.eventService.getEventList(this.page, this.limit, this.search).subscribe((res: any) => {
+        const uniqueDates = new Set<string>();
+        this.events = res.data.map((event: any) => {
+
+          const eventStartDate = new Date(event.date);
+          const eventStartTime = event.startTime ? this.convertToDateTime(event.date, event.startTime) : event.date;
+          const eventEndTime = event.endTime ? this.convertToDateTime(event.date, event.endTime) : event.date;
+
+          const eventDate = eventStartDate.toISOString().split('T')[0];
+          uniqueDates.add(eventDate);
+
+          return {
+            id: event._id,
+            title: event.eventName,
+            start: eventStartTime,
+            end: eventEndTime,
+            date: eventStartDate,
+            description: event.eventType
+          };
+        });
+        this.eventDates = Array.from(uniqueDates);
+        this.updateCalendarEvents();
+      });
+      this.unsubscribe.push(saveSubscribe);
+    }
+    catch (err: any) {
+      this.toast.error(err || 'An unexpected error occurred');
+    }
+  }
+
+  updateCalendarEvents() {
+    this.calendarOptions.set({
+      events: this.events
     });
   }
 
-  onSearchChange(search: string): void {
-    this.search = search;
-    this.page = 1;
-    this.getEventsList();
+  convertToDateTime(date: string, time: string) {
+    const eventDate = new Date(date);
+    const [timeStr, period] = time.split(' ');
+    let [hours, minutes] = timeStr.split(':').map(num => parseInt(num, 10));
+    if (period === 'PM' && hours < 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+    eventDate.setHours(hours, minutes, 0);
+    return eventDate.toISOString();
   }
 
-  onPageChange(page: number): void {
-    this.page = page;
-    this.getEventsList();
+  onDateChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const selectedDate = target.value;
+    let selectedDay: Date;
+    if (selectedDate === 'today') {
+      selectedDay = new Date();
+    } else {
+      selectedDay = new Date(selectedDate);
+    }
+    const selectedEvents = this.events.filter(event => {
+      const eventDate = new Date(event.start);
+      return eventDate.toDateString() === selectedDay.toDateString();
+    });
+    this.calendarOptions.set({
+      events: selectedEvents,
+      initialView: 'timeGridDay',
+    });
+    const calendarApi = this.fullCalendar?.getApi();
+    if (calendarApi) {
+      calendarApi.gotoDate(selectedDay);
+    }
   }
 
-  onPageSizeChange(size: number): void {
-    this.limit = size;
-    this.page = 1;
-    this.getEventsList();
-  }
 
-  getTotalPages(): number {
-    return Math.ceil((this.totalCount ?? 0) / this.limit);
-  }
-
-  getPagesArray(): number[] {
-    const totalPages = this.getTotalPages();
-    return Array(totalPages).fill(0).map((x, i) => i + 1);
+  openEventModal(eventId: string) {
+    const selectedEvent = this.events.find(event => event.id === eventId);
+    if (selectedEvent) {
+      this.selectedEvent = selectedEvent;
+      this.modalService.open(this.eventDetailsModal);
+    }
   }
 
   openModal(content: any, eventId: string) {
@@ -76,36 +166,46 @@ export class EventListComponent implements OnInit {
   }
 
   deleteEvent() {
-    if (this.selectedEventId) {
-      this.eventService.deleteEvent(this.selectedEventId).subscribe({
-        next: () => {
-          this.toast.success("Event deleted successfully");
-          this.modalService.dismissAll();
-          this.getEventsList();
-        },
-        error: (err: any) => {
-          this.toast.error(err?.error?.message);
-        }
-      });
+    try {
+      if (this.selectedEventId) {
+        const saveSubscribe = this.eventService.deleteEvent(this.selectedEventId).subscribe({
+          next: () => {
+            this.toast.success('Event deleted successfully');
+            this.modalService.dismissAll();
+            this.getEventsList();
+          },
+          error: (err: any) => {
+            this.toast.error(err?.error?.message || "Something went wrong. Please try again later.");
+          }
+        });
+        this.unsubscribe.push(saveSubscribe);
+      }
+    } catch (err: any) {
+      this.toast.error(err || 'An unexpected error occurred');
     }
   }
 
-  isEventExpired(eventDate: string): boolean {
-    const today = new Date();
-    const eventDateObj = new Date(eventDate);
-    return eventDateObj < today;
-  }
-
-  addEventPage() {
-    this.route.navigateByUrl("event/add");
+  addEventPage(date?: string) {
+    if (date) {
+      this.route.navigateByUrl(`event/add?date=${date}`);
+    } else {
+      this.route.navigateByUrl('event/add');
+    }
   }
 
   editEventPage(id: string) {
     this.route.navigateByUrl(`event/edit/${id}`);
+    this.modalService.dismissAll();
   }
 
   bookingPage() {
-    this.route.navigateByUrl("booking/add")
+    this.route.navigateByUrl('booking/add');
+    this.modalService.dismissAll();
+  }
+
+
+  ngOnDestroy(): void {
+    this.unsubscribe.forEach((sub) => sub.unsubscribe());
   }
 
 }

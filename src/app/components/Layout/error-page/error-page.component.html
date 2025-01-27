@@ -1,0 +1,18 @@
+<div class="error-page">
+    <div class="title">
+        The page you are looking for isn’t here
+    </div>
+    <div class="img-wrap">
+        <img src="https://app.helloretriever.com/static/error/error404_light.svg" alt="error" class="img-fluid">
+    </div>
+    <div class="btn-wraper">
+        <div class="btn btn-primary" (click)="backButton()">
+            @if(adminRole){
+            Back To Events
+            }
+            @else {
+            Back To Bookings
+            }
+        </div>
+    </div>
+</div>

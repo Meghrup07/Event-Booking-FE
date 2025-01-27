@@ -4,51 +4,75 @@
             <h2>Add Booking</h2>
         </div>
         <div class="add-btn">
-            <button (click)="backPage()" type="button" class="btn btn-primary">Back</button>
+            <button (click)="backPage()" type="button" class="btn btn-primary">Back To Bookings</button>
         </div>
     </div>
 
-    <div class="booking-add-form">
-        <form [formGroup]="bookingForm" class="auth-form">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Event</label>
-                        <select class="form-select" formControlName="eventId"
-                            [class.is-invalid]="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched">
-                            <option *ngFor="let event of eventList; let i = index" [value]="event._id"
-                                [disabled]="isEventExpired(event.date)">{{event.eventName}}</option>
-                        </select>
-                        <div *ngIf="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched"
-                            class="invalid-feedback">
-                            Please select event
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Select Seat Number</label>
-                        <div class="seat-grid">
-                            <div *ngFor="let seat of availableSeats" class="seat"
-                                [class.booked]="bookedSeats.includes(seat)"
-                                [class.selected]="seat === bookingForm.get('seatNumber')?.value"
-                                [class.disabled]="bookedSeats.includes(seat)" (click)="selectSeat(seat, content)">
-                                {{ seat }}
+    <div class="page-scroll">
+        <div class="booking-add-form">
+            <form [formGroup]="bookingForm" class="auth-form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Event</label>
+                            <select class="form-select" formControlName="eventId"
+                                [class.is-invalid]="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched">
+                                <option *ngFor="let event of eventList; let i = index" [value]="event._id"
+                                    [disabled]="isEventExpired(event.date)">{{event.eventName}}</option>
+                            </select>
+                            <div *ngIf="bookingForm.get('eventId')?.errors && bookingForm.get('eventId')?.touched"
+                                class="invalid-feedback">
+                                Please select event
                             </div>
                         </div>
-                        <div *ngIf="bookingForm.get('seatNumber')?.errors && bookingForm.get('seatNumber')?.touched"
-                            class="invalid-feedback">
-                            Please select a seat
+                    </div>
+
+                    @if(eventDate){
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="text" class="form-control" value="{{eventDate | date: 'dd/MM/yyyy'}}" disabled>
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">How many seats?</label>
+                            <select class="form-select" (change)="onSeatsNumberChange()"
+                                formControlName="numberOfSeats">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    }
 
-            </div>
-            <div class="text-center mt-3">
-                <button class="btn btn-primary" (click)="bookingHandler()" type="submit">Save</button>
-            </div>
-        </form>
+                    @if(numberOfSeats){
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label class="form-label text-center d-block"><b>Select Seats</b></label>
+                            <div class="seat-grid">
+                                <div *ngFor="let seat of availableSeats" class="seat" [class.booked]="isBooked(seat)"
+                                    [class.selected]="isSelected(seat)" [class.disabled]="isSeatDisabled(seat)"
+                                    (click)="selectSeat(seat, content)">
+                                    {{ seat }}
+                                </div>
+                            </div>
+                            <div *ngIf="bookingForm.get('seatNumber')?.errors && bookingForm.get('seatNumber')?.touched"
+                                class="invalid-feedback">
+                                Please select at least one seat
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" (click)="bookingHandler()" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <ng-template #content let-modal>

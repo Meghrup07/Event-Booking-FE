@@ -1,8 +1,36 @@
-.pagination-wrap{
+.pagination-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    p, ul{
+
+    p,
+    ul {
         margin-bottom: 0;
     }
+}
+
+
+
+h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+ul {
+    margin: 0;
+    padding: 0 0 0 1.5em;
+}
+
+li {
+    margin: 1.5em 0;
+    padding: 0;
+}
+
+b {
+    margin-right: 3px;
+}
+
+.fc {
+    max-width: 100%;
+    margin: 0 auto;
 }

@@ -1,23 +1,25 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { UserService } from '../../../shared/services/user.service';
-import { ToastrService } from 'ngx-toastr';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
-  standalone: true,
   imports: [CommonModule, NgbModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
 
   private userService = inject(UserService);
-  private toast = inject(ToastrService);
   private modalService = inject(NgbModal);
+  private toast = inject(ToastrService);
 
-  userList: any[] = [];
+  private unsubscribe: Subscription[] = [];
+
+  userList: any[] = []
 
   selectedUserId: string | null = null;
 
@@ -26,29 +28,46 @@ export class UserListComponent implements OnInit {
   }
 
   getUserList() {
-    this.userService.getAllUser().subscribe((res: any) => {
-      this.userList = res?.data;
-    })
+    try {
+      const saveSubscribe = this.userService.getAllUser().subscribe((res: any) => {
+        if (res.status == true) {
+          this.userList = res?.data;
+        }
+      });
+      this.unsubscribe.push(saveSubscribe);
+    } catch (err: any) {
+      this.toast.error(err || 'An unexpected error occurred');
+    }
   }
 
-  openModal(content: any, eventId: string) {
-    this.selectedUserId = eventId;
+  openModal(content: any, userId: string) {
+    this.selectedUserId = userId;
     this.modalService.open(content);
   }
 
   deleteUser() {
-    if (this.selectedUserId) {
-      this.userService.deleteUser(this.selectedUserId).subscribe({
-        next: () => {
-          this.toast.success("User deleted successfully");
-          this.modalService.dismissAll();
-          this.getUserList();
-        },
-        error: (err: any) => {
-          this.toast.error(err?.error?.message);
-        }
-      });
+    try {
+      if (this.selectedUserId) {
+        const saveSubscribe = this.userService.deleteUser(this.selectedUserId).subscribe({
+          next: () => {
+            this.toast.success("User deleted successfully");
+            this.modalService.dismissAll();
+            this.getUserList();
+          },
+          error: (err: any) => {
+            this.toast.error(err?.error?.message || 'Something went wrong. Please try again later.');
+          }
+        });
+        this.unsubscribe.push(saveSubscribe);
+      }
     }
+    catch (err: any) {
+      this.toast.error(err || 'An unexpected error occurred')
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.forEach((sub) => sub.unsubscribe());
   }
 
 }

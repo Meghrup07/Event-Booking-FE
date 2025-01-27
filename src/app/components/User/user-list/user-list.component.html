@@ -4,43 +4,43 @@
             <h2>Users</h2>
         </div>
     </div>
-    <div class="responsive-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Sr. No.</th>
-                    <th>User Name</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of userList; let i = index">
-                    <td>{{i + 1}}</td>
-                    <td>{{user.userName}}</td>
-                    <td>{{user.firstName | titlecase}} {{user.lastName | titlecase}}</td>
-                    <td>{{user.email }}</td>
-                    <td>{{user.role | titlecase}}</td>
-                    <td>
-                        @if(user.role != 'admin'){
-                        <div ngbDropdown class="d-inline-block">
-                            <button type="button" class="btn btn-outline-secondary" id="dropdownBasic"
-                                ngbDropdownToggle>
-                                Actions
-                            </button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic">
-
-                                <button ngbDropdownItem (click)="openModal(content, user._id)">Delete</button>
-
+    <div class="page-scroll">
+        <div class="responsive-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>User Name</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of userList; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{user.userName}}</td>
+                        <td>{{user.firstName | titlecase}} {{user.lastName | titlecase}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.role | titlecase}}</td>
+                        <td>
+                            @if(user.role != 'admin'){
+                            <div ngbDropdown class="d-inline-block">
+                                <button type="button" class="btn btn-outline-secondary" id="dropdownBasic"
+                                    ngbDropdownToggle>
+                                    Actions
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic">
+                                    <button ngbDropdownItem (click)="openModal(content, user._id)">Delete</button>
+                                </div>
                             </div>
-                        </div>
-                        }
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <ng-template #content let-modal>

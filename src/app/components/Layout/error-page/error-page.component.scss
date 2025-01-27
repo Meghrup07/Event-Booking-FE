@@ -1,0 +1,21 @@
+.error-page {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    padding: 40px 0;
+    background-color: #F8F9FE;
+    color: #fff;
+    margin: 20px;
+    box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
+    border-radius: 10px;
+    flex-direction: column;
+
+    .title {
+        font-size: 34px;
+        margin-bottom: 40px;
+    }
+
+    .img-wrap {
+        margin-bottom: 40px;
+    }
+}

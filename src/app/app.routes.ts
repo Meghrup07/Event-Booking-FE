@@ -1,34 +1,29 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './shared/Guard/auth.guard';
+import { ErrorPageComponent } from './components/Layout/error-page/error-page.component';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: '',
+        redirectTo: 'auth',
         pathMatch: 'full'
     },
     {
-        path: '',
+        path: 'auth',
+        
         loadChildren: () => import('./components/Auth/auth.module').then(m => m.AuthModule)
     },
     {
-        path: "event",
-        loadChildren: () => import("./components/Events/event.module").then(m => m.EventModule),
-        canActivate: [authGuard]
+        path: '',
+        loadChildren: () => import('./components/Layout/layout.module').then(m => m.LayoutModule),
+        canActivate: [authGuard],
     },
     {
-        path: "booking",
-        loadChildren:() => import("./components/Booking/booking.module").then(m=>m.BookingModule),
-        canActivate: [authGuard]
-    },
-    {
-        path: 'user',
-        loadChildren:()=> import("./components/User/user.module").then(m=> m.UserModule),
-        canActivate: [authGuard]
+        path: 'error',
+        component: ErrorPageComponent
     },
     {
         path: '**',
-        loadChildren: () => import('./components/Auth/auth.module').then(m => m.AuthModule),
-        pathMatch: "full"
+        redirectTo: 'error'
     },
 ];

@@ -1,19 +1,21 @@
 <div class="siderbar-wraper">
     <div class="siderbar-item">
         <ul class="menu-list">
+            @if(adminRole){
             <li class="menu-item">
-                <a routerLinkActive="active-link" routerLink="/event" class="menu-link">Events</a>
-            </li>
-            <li class="menu-item">
-                <a routerLinkActive="active-link" routerLink="/booking" class="menu-link">Bookings</a>
-            </li>
-            @if (adminRole) {
-            <li class="menu-item">
-                <a routerLinkActive="active-link" routerLink="user/list" class="menu-link">Users</a>
+                <a routerLinkActive="active-link" routerLink="/event/list" class="menu-link">Events</a>
             </li>
             }
             <li class="menu-item">
-                <a routerLinkActive="active-link" routerLink="user/profile" class="menu-link">Profile</a>
+                <a routerLinkActive="active-link" routerLink="/booking/list" class="menu-link">Bookings</a>
+            </li>
+            @if(adminRole){
+            <li class="menu-item">
+                <a routerLinkActive="active-link" routerLink="/user/list" class="menu-link">Users</a>
+            </li>
+            }
+            <li class="menu-item">
+                <a routerLinkActive="active-link" routerLink="/user/profile" class="menu-link">Profile</a>
             </li>
             <li class="menu-item">
                 <a routerLink="" class="menu-link" (click)="logout()">Logout</a>

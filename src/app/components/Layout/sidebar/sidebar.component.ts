@@ -1,11 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
@@ -17,12 +16,12 @@ export class SidebarComponent implements OnInit {
   adminRole: any;
 
   ngOnInit(): void {
-    this.adminRole = this.authService.currentUser().role == "admin";
+    this.adminRole = this.authService.currentUser()?.role == "admin"
   }
 
   logout() {
     this.authService.logout();
-    this.toast.success("logout successfull");
+    this.toast.success("Logout successfull");
   }
 
 }

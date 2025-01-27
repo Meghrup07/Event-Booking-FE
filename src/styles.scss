@@ -1,8 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Importing Bootstrap SCSS file. */
-@import "bootstrap/scss/bootstrap";
-
 * {
     color: #000;
 }
@@ -11,35 +6,33 @@ body {
     color: #000;
 }
 
+
 ::-webkit-scrollbar {
     height: 3px;
     width: 4px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-    background: #f7f7f7;
+    background: #F7F7F7;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #818fdd;
+    background: #818FDD;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #6679db;
+    background: #6679DB;
 }
 
 .btn {
     &.btn-primary {
-        background-color: #6679db !important;
-        border-color: #6679db !important;
+        background-color: #6679DB !important;
+        border-color: #6679DB !important;
         box-shadow: 2px 2px 10px 1px rgba(147, 150, 166, 0.4) !important;
 
         &:hover {
-            background-color: #818fdd !important;
-            border-color: #818fdd !important;
+            background-color: #818FDD !important;
+            border-color: #818FDD !important;
         }
     }
 
@@ -66,13 +59,14 @@ header {
         top: 0;
         left: 0;
         right: 0;
-        background-color: #6679db;
+        background-color: #6679DB;
         display: flex;
         align-items: center;
         color: #fff;
         padding: 0 20px;
     }
 }
+
 
 .main-wraper {
     display: flex;
@@ -82,7 +76,7 @@ header {
         width: 250px;
         max-width: 250px;
         min-width: 250px;
-        background-color: #f8f9fe;
+        background-color: #F8F9FE;
         color: #fff;
         margin: 20px 0;
         box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
@@ -93,16 +87,26 @@ header {
     .layout {
         padding: 20px;
         flex: 1;
-        overflow: auto;
-        background-color: #f8f9fe;
+        overflow: hidden;
+        background-color: #F8F9FE;
         color: #fff;
         margin: 20px 0 20px 20px;
         box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
         border-radius: 10px;
     }
 
+    .custom-calendar {
+        height: 80%;
+    }
+
+    .page-scroll {
+        height: calc(100vh - 160px);
+        overflow-y: auto;
+        // padding-bottom: 40px;
+    }
+
     .title-wraper {
-        border-bottom: 1px solid #e7e8e8;
+        border-bottom: 1px solid #E7E8E8;
         margin-bottom: 20px;
         display: flex;
         align-items: end;
@@ -116,7 +120,7 @@ header {
                 content: "";
                 width: 80px;
                 height: 3px;
-                background-color: #6679db;
+                background-color: #6679DB;
                 position: absolute;
                 bottom: -7px;
             }
@@ -124,7 +128,7 @@ header {
             h2 {
                 font-size: 20px;
                 line-height: 28px;
-                color: #6679db;
+                color: #6679DB;
                 font-weight: 600;
                 width: max-content;
                 margin-bottom: 0;
@@ -138,56 +142,60 @@ header {
     }
 
     .page-search {
-        margin-bottom: 40px;
-
-        input {
+        .form-control {
             margin-left: auto;
             width: 15%;
         }
     }
 
-    table {
-        tbody,
-        td,
-        tfoot,
-        th,
-        thead,
-        tr {
-            border-color: #f8f9fe;
-            border-bottom: 5px solid #f8f9fe;
-            height: 60px;
-            vertical-align: middle;
+    .responsive-table {
+
+        table {
+
+            tbody,
+            td,
+            tfoot,
+            th,
+            thead,
+            tr {
+                border-color: #F8F9FE;
+                border-bottom: 5px solid #F8F9FE;
+                height: 60px;
+                vertical-align: middle;
+            }
         }
     }
 
     .card {
         box-shadow: 0 6px 16px 4px rgb(174 176 177 / 40%);
 
-        // .card-title {
-        //     color: #9396a6;
-        // }
-
         .card-text {
             text-align: center;
             font-size: 30px;
             font-weight: 700;
-            color: #6679db;
+            color: #6679DB;
         }
     }
 }
 
 .password-input {
     position: relative;
+
     .btn {
         position: absolute;
         top: 0;
         right: 0;
+
+        &:hover {
+            background-color: #6679DB !important;
+        }
     }
 }
 
 .toast-message {
     color: #fff !important;
 }
+
 
 .seat-grid {
     display: grid;
@@ -215,7 +223,7 @@ header {
 }
 
 .seat.selected {
-    background-color: #6679db;
+    background-color: #6679DB;
     color: white;
     font-weight: bold;
 }
@@ -227,4 +235,31 @@ header {
 
 .seat:hover:not(.booked):not(.disabled) {
     background-color: #d3d3d3;
+}
+
+.fc-v-event {
+    background-color: #6c72d8;
+    border: 1px solid #6c72d8;
+    display: block;
+    color: #fff !important;
+}
+
+.fc-event-time,
+.fc-event-title {
+    color: #fff !important;
+    font-size: 16px;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end {
+    background-color: #6679DB;
+}
+
+.fc-day-today {
+    background-color: white !important;
+    color: inherit;
+}
+
+.fc-col-header-cell-cushion {
+    color: #6679DB;
+    text-decoration: none;
 }

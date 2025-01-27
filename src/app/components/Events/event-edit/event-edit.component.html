@@ -4,70 +4,103 @@
             <h2>Edit Event</h2>
         </div>
         <div class="add-btn">
-            <button (click)="backPage()" type="button" class="btn btn-primary">Back</button>
+            <button (click)="backPage()" type="button" class="btn btn-primary">Back To Events</button>
         </div>
     </div>
 
-    <div class="booking-add-form">
-        <form [formGroup]="editEventForm" class="auth-form">
-            <div class="row">
+    <div class="page-scroll">
+        <div class="booking-add-form">
+            <form [formGroup]="editEventForm" class="auth-form">
+                <div class="row">
 
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Event Name</label>
-                        <input type="text" class="form-control" formControlName="eventName"
-                        [class.is-invalid]="editEventForm.get('eventName')?.errors && editEventForm.get('eventName')?.touched">
-                        <div *ngIf="editEventForm.get('eventName')?.errors && editEventForm.get('eventName')?.touched"
-                            class="invalid-feedback">
-                            Event name is required
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Event Name</label>
+                            <input type="text" class="form-control" formControlName="eventName"
+                                [class.is-invalid]="editEventForm.get('eventName')?.errors && editEventForm.get('eventName')?.touched">
+                            <div *ngIf="editEventForm.get('eventName')?.errors && editEventForm.get('eventName')?.touched"
+                                class="invalid-feedback">
+                                Event name is required
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Event Type</label>
-                        <select class="form-select" formControlName="eventType"
-                            [class.is-invalid]="editEventForm.get('eventType')?.errors && editEventForm.get('eventType')?.touched">
-                            <option value="concert" [selected]="editEventForm.get('eventType')?.value === 'concert'">Concert</option>
-                            <option value="conference" [selected]="editEventForm.get('eventType')?.value === 'conference'">Conference</option>
-                        </select>
-                        <div *ngIf="editEventForm.get('eventType')?.errors && editEventForm.get('eventType')?.touched"
-                            class="invalid-feedback">
-                        Please select event type
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Event Type</label>
+                            <select class="form-select" formControlName="eventType"
+                                [class.is-invalid]="editEventForm.get('eventType')?.errors && editEventForm.get('eventType')?.touched">
+                                <option value="concert"
+                                    [selected]="editEventForm.get('eventType')?.value === 'concert'">Concert</option>
+                                <option value="conference"
+                                    [selected]="editEventForm.get('eventType')?.value === 'conference'">Conference
+                                </option>
+                            </select>
+                            <div *ngIf="editEventForm.get('eventType')?.errors && editEventForm.get('eventType')?.touched"
+                                class="invalid-feedback">
+                                Please select event type
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Event Date</label>
-                        <input type="date" class="form-control" formControlName="date"
-                        [class.is-invalid]="editEventForm.get('date')?.errors && editEventForm.get('date')?.touched">
-                        <div *ngIf="editEventForm.get('date')?.errors && editEventForm.get('date')?.touched"
-                            class="invalid-feedback">
-                            Date is required
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control" formControlName="date"
+                                [class.is-invalid]="editEventForm.get('date')?.errors && editEventForm.get('date')?.touched">
+                            <div *ngIf="editEventForm.get('date')?.errors && editEventForm.get('date')?.touched"
+                                class="invalid-feedback">
+                                Date is required
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Total Seats</label>
-                        <input type="number" class="form-control" formControlName="totalSeats"
-                        [class.is-invalid]="editEventForm.get('totalSeats')?.errors && editEventForm.get('totalSeats')?.touched">
-                        <div *ngIf="editEventForm.get('totalSeats')?.errors && editEventForm.get('totalSeats')?.touched"
-                            class="invalid-feedback">
-                            Total seats is required
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Total Seats</label>
+                            <input type="number" class="form-control" formControlName="totalSeats"
+                                [class.is-invalid]="editEventForm.get('totalSeats')?.errors && editEventForm.get('totalSeats')?.touched">
+                            <div *ngIf="editEventForm.get('totalSeats')?.errors && editEventForm.get('totalSeats')?.touched"
+                                class="invalid-feedback">
+                                Total seats is required
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="text-center mt-3">
-                <button class="btn btn-primary" type="submit" (click)="editEventHandler()">Save</button>
-            </div>
-        </form>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" class="form-control" formControlName="startTime"
+                                [class.is-invalid]="editEventForm.get('startTime')?.errors && editEventForm.get('startTime')?.touched">
+                            <div *ngIf="editEventForm.get('startTime')?.errors && editEventForm.get('startTime')?.touched"
+                                class="invalid-feedback">
+                                Start time is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">End Time</label>
+                            <input type="time" class="form-control" formControlName="endTime"
+                                [class.is-invalid]="editEventForm.get('endTime')?.errors && editEventForm.get('endTime')?.touched">
+                            <div *ngIf="editEventForm.get('endTime')?.errors && editEventForm.get('endTime')?.touched"
+                                class="invalid-feedback">
+                                End time is required
+                            </div>
+                            <div *ngIf="editEventForm.get('endTime')?.hasError('endBeforeStart') && editEventForm.get('endTime')?.touched"
+                                class="invalid-feedback">
+                                End time must be after start time!
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" type="submit" (click)="editEventHandler()">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>

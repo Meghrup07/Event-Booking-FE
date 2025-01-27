@@ -4,41 +4,49 @@
             <h2>Bookings</h2>
         </div>
         <div class="add-btn">
-                <button type="button" class="btn btn-primary" (click)="addBookingPage()">Book seats</button>
+            <button type="button" class="btn btn-primary" (click)="addBookingPage()">Book Seat</button>
         </div>
     </div>
-    <div class="responsive-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Sr. No.</th>
-                    <th>Event Name</th>
-                    <th>Event Type</th>
-                    <th>Date</th>
-                    <th>Booked Seats No.</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let booking of bookingList; let i = index">
-                    <td>{{i + 1}}</td>
-                    <td>{{booking.eventName}}</td>
-                    <td>{{booking.eventType | titlecase}}</td>
-                    <td>{{booking.date | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{booking.seatNumber}}</td>
-                    <td>
-                       <div ngbDropdown class="d-inline-block">
-                            <button type="button" class="btn btn-outline-secondary" id="dropdownBasic" ngbDropdownToggle>
-                                Actions
-                            </button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic">
-                                <button ngbDropdownItem (click)="openModal(content, booking._id)">Cancel Booking</button>
+
+    <div class="page-scroll">
+        <div class="responsive-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Event Name</th>
+                        <th>Event Type</th>
+                        <th>Date</th>
+                        <th>Booked Seats No.</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let booking of bookingList; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{booking.eventName}}</td>
+                        <td>{{booking.eventType | titlecase}}</td>
+                        <td>{{booking.date | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{booking.seatNumber}}</td>
+                        <td>
+                            <div ngbDropdown class="d-inline-block">
+                                <button type="button" class="btn btn-outline-secondary" id="dropdownBasic"
+                                    ngbDropdownToggle>
+                                    Actions
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic">
+                                    <button ngbDropdownItem (click)="openModal(content, booking._id)">Cancel
+                                        Booking</button>
+                                </div>
                             </div>
-                        </div> 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!bookingList || bookingList.length === 0">
+                        <td colspan="6" class="text-center">No Bookings Found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <ng-template #content let-modal>

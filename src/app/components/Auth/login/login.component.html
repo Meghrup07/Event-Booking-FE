@@ -32,7 +32,6 @@
                                 <i [ngClass]="passwordFieldType === 'password' ? 'bi-eye' : 'bi-eye-slash'"></i>
                             </button>
                         </div>
-
                         <div *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched"
                             class="invalid-feedback">
                             Password is required

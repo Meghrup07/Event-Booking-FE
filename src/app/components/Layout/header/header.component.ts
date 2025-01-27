@@ -1,9 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { inject, Injectable } from '@angular/core';
 export class EventService {
   private http = inject(HttpClient);
   
-  apiUrl = 'http://localhost:3000/api/'
+  apiUrl = environment.apiUrl;
 
   getEventList(page:number, limit:number, search:string){
     const url = this.apiUrl + 'event/event-list';

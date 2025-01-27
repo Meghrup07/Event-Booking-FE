@@ -1,0 +1,14 @@
+.seat {
+    cursor: pointer;
+    
+    &.selected {
+        background-color: #6679DB;
+        color: white;
+    }
+    
+    &.booked {
+        background-color: #000000;
+        opacity: 0.5;
+        color: white;
+    }
+}

@@ -6,20 +6,21 @@ import { roleGuard } from '../../shared/Guard/role.guard';
 import { EventEditComponent } from './event-edit/event-edit.component';
 
 const routes: Routes = [
-    {
-      path: "",
-      component: EventListComponent
-    },
-    {
-      path: "add",
-      component: EventAddComponent,
-      canActivate: [roleGuard]
-    },
-    {
-      path: "edit/:id",
-      component: EventEditComponent,
-      canActivate: [roleGuard]
-    }
+  {
+    path: "list",
+    component: EventListComponent,
+    canActivate: [roleGuard]
+  },
+  {
+    path: "add",
+    component: EventAddComponent,
+    canActivate: [roleGuard]
+  },
+  {
+    path: "edit/:id",
+    component: EventEditComponent,
+    canActivate: [roleGuard]
+  }
 ];
 
 @NgModule({
