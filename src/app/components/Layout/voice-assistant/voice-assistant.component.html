@@ -1,0 +1,12 @@
+<div class="voice-assistant-container">
+  <div class="voice-controls">
+    <button [class.active]="isListening" (click)="toggleListening()" class="voice-button">
+      @if(isListening){
+      <i class="fas fa-microphone-slash"></i>
+      }@else {
+      <i class="fas fa-microphone"></i>
+      }
+    </button>
+  </div>
+
+</div>

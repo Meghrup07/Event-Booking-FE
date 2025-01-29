@@ -1,5 +1,5 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../../shared/services/login.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
   private authService = inject(LoginService);
   private toast = inject(ToastrService);
   private route = inject(Router);
+  private routeParams = inject(ActivatedRoute);
   private modalService = inject(NgbModal);
 
   private unsubscribe: Subscription[] = [];
@@ -40,7 +41,48 @@ export class AddBookingComponent implements OnInit, OnDestroy {
     this.getBookingForm();
     this.getEventsList();
     this.userId = this.authService.currentUser()?._id;
-    // console.log("this.numberOfSeats", this.numberOfSeats);
+    const queryParams = this.routeParams.snapshot.queryParams;
+
+    const eventListSubscription = this.bookingService.eventList().subscribe({
+      next: (res: any) => {
+        this.eventList = res.data;
+
+        if (queryParams['eventId']) {
+          this.bookingForm.patchValue({
+            eventId: queryParams['eventId']
+          });
+          this.onEventChange(queryParams['eventId']);
+        }
+
+        if (queryParams['seatNumber']) {
+          this.bookingForm.patchValue({
+            numberOfSeats: queryParams['seatNumber']
+          });
+          this.onSeatsNumberChange();
+
+          this.bookingForm.patchValue({
+            userId: this.userId
+          });
+
+          setTimeout(() => {
+            if (this.bookingForm.valid &&
+              this.bookingForm.get('seatNumber')?.value?.length > 0 &&
+              this.bookingForm.get('eventId')?.value &&
+              this.bookingForm.get('numberOfSeats')?.value) {
+              this.bookingHandler();
+            } else {
+              this.toast.info('Please review and confirm your booking details');
+            }
+          }, 500);
+
+        }
+      },
+      error: (err) => {
+        this.toast.error(err || 'An unexpected error occurred');
+      }
+    });
+
+    this.unsubscribe.push(eventListSubscription);
   }
 
   getBookingForm() {
@@ -69,9 +111,7 @@ export class AddBookingComponent implements OnInit, OnDestroy {
 
   onEventChange(eventId: string) {
     this.selectedEvent = this.eventList.find(event => event._id === eventId);
-    console.log("event", this.selectedEvent);
     this.eventDate = this.selectedEvent.date.split('T')[0];
-    console.log("event", this.eventDate);
     if (this.selectedEvent) {
       this.bookedSeats = this.selectedEvent.bookedSeats || [];
       this.generateAvailableSeats();

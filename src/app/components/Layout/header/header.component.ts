@@ -1,9 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { LoginService } from '../../../shared/services/login.service';
+import { VoiceAssistantComponent } from "../voice-assistant/voice-assistant.component";
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [VoiceAssistantComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

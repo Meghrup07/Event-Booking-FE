@@ -1,0 +1,22 @@
+.voice-button {
+    background-color: #fff !important;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #9396a6 !important;
+
+    &:hover {
+        background-color: #6679DB !important;
+        border-color: #fff !important;
+        color: #fff !important;
+
+        .fas {
+            color: #fff;
+        }
+    }
+
+    .fas {
+        color: #6679DB;
+    }
+}
