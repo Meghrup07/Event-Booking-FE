@@ -48,7 +48,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: angular-app
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
@@ -59,5 +59,5 @@ jobs:
         with:
           app-name: 'Epp7-Frontend'
           slot-name: 'Production'
-          package: .
+          package: ./angular-app
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D81055CB442844D5B2ACD0219EB10681 }}
